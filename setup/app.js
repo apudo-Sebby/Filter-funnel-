@@ -74,9 +74,39 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector('.section-center');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
+
+// Load events that dynamically loads content on the page
 window.addEventListener('DOMContentLoaded', function() {
-  let displayMenu = menu.map(function(item) {
+  displayMenuItems(menu)
+});
+
+// Click events for the filter buttons
+filterBtns.forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function(menuItem) {
+      // console.log(menuItem.category);
+      if(menuItem.category === category) {
+        return menuItem;
+      }
+    });
+    // console.log(menuCategory);
+    if(category === "all") {
+      displayMenuItems(menu)
+    }
+    else {
+      displayMenuItems(menuCategory)
+   }
+  });
+});
+
+
+
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function(item) {
     // console.log(item);
 
     return `<article class="menu-item">
@@ -87,9 +117,10 @@ window.addEventListener('DOMContentLoaded', function() {
         <h4 class="price">KES${item.price}</h4>
       </header>
       <p class="item-text">${item.desc}</p>
-    </div>
+    </div> 
   </article>`;
-  });
-  displayMenu = displayMenu.join('')
-  sectionCenter.innerHTML = displayMenu
 });
+displayMenu = displayMenu.join('')
+
+sectionCenter.innerHTML = displayMenu
+}
